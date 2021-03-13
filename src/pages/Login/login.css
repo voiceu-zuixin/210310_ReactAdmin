@@ -21,14 +21,17 @@
 }
 .login .login-content {
   width: 400px;
-  height: 300px;
+  height: 330px;
   background-color: #fff;
   margin: 50px auto;
-  padding: 20px 40px;
+  padding: 20px 40px 30px ;
 }
 .login .login-content h2 {
   font-size: 30px;
   text-align: center;
   font-weight: bold;
+}
+.login .login-content .login-form .login-form-button {
+  width: 100%;
 }
 /*# sourceMappingURL=./login.css.map */
