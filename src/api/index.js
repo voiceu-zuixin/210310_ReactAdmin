@@ -3,6 +3,7 @@
     每个函数的返回值都是promise
 */
 import ajax from './ajax'
+import jsonp from 'jsonp'
 
 /*
     对于复合对象的导出，如果用export default会出现Assign object to a variable before exporting as module default的报错
@@ -25,3 +26,14 @@ export function reqLogin(username, password) {
 export function reqAddUser(user) {
     return ajax('/manage/user/add', user, 'POST')
 }
+
+/* 
+json请求的接口请求函数
+*/
+export const reqWeather = () => {
+    const url = "https://wis.qq.com/weather/common?source=pc&weather_type=observe%7Cforecast_1h%7Cforecast_24h%7Cindex%7Calarm%7Climit%7Ctips%7Crise&province=江苏省&city=徐州市"
+    jsonp(url, {}, (err, data) => {
+        console.log(err, data);
+    })
+}
+reqWeather()

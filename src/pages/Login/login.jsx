@@ -3,7 +3,10 @@ import './login.less'
 import { Form, Input, Button, Checkbox,message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {reqLogin} from '../../api'
-import logo from './images/logo.png'//按alt + <——可以快速回退到本文件
+import memoryUtils from '../../utils/memoryUtils'
+import storeUtils from '../../utils/storageUtils'
+import logo from '../../assets/images/logo.png'//按alt + <——可以快速回退到本文件
+import { Redirect } from 'react-router'; 
 
 
 export default class login extends Component {
@@ -18,6 +21,13 @@ export default class login extends Component {
             if(result.status === 0 ){
                 //登录成功
                 message.success('登录成功')
+
+                //保存user
+                const user = result.data
+                memoryUtils.user = user//保存在内存中
+                storeUtils.saveUser(user)//保存到local中
+
+
                 //跳转到管理页面,用history跳转,(不需要再回退回登录页面)
                 this.props.history.replace('/')
             }else{
@@ -34,6 +44,11 @@ export default class login extends Component {
 
 
     render() {
+        //如果用户已经登录，就跳转到管理界面
+        const user =  memoryUtils.user
+        if(user && user._id){
+            return <Redirect to='/'/>
+        } 
         return (
             <div className="login">
                 <header className="login-header">
