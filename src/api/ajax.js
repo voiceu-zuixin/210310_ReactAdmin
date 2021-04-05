@@ -11,7 +11,7 @@
 import axios from 'axios'
 import { message } from 'antd'
 
-export default function ajax(url, data = {}, type = 'GET') {
+export default function ajax(url, data = {}, type = 'GET') {//这个叫形参默认值
 
     //本身就是return一个promise对象，在这里进行集中处理，因为都会经过这里
     // 新建一个promise对象，对于没有异常的，直接成功回调网上传出去，对于失败的就进行处理了

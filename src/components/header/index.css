@@ -9,9 +9,6 @@
   border-bottom: 1px solid #1da75a;
   padding-right: 30px;
 }
-.header .header-top span {
-  margin-right: 15px;
-}
 .header .header-bottom {
   height: 40px;
   display: flex;

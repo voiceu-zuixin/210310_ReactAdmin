@@ -4,6 +4,7 @@
 */
 import ajax from './ajax'
 import jsonp from 'jsonp'
+import { message } from 'antd'
 
 /*
     对于复合对象的导出，如果用export default会出现Assign object to a variable before exporting as module default的报错
@@ -19,21 +20,64 @@ import jsonp from 'jsonp'
 //     }
 // }
 
-// const BASE =''
+const BASE = ''
+//引入到login里了
 export function reqLogin(username, password) {
     return ajax('./login', { username, password }, 'POST')
 }
+
+// 添加用户    没有的时候，先查看后端代码，看看哪个地址和方式，可以用postman先创建一个用户
 export function reqAddUser(user) {
     return ajax('/manage/user/add', user, 'POST')
 }
+
+// 获取一级/二级分类的列表
+export const reqCategorys = (parentId) => {
+    return ajax(BASE + '/manage/category/list', { parentId })
+}
+// 添加分类
+export const reqAddCategorys = (categoryName, parentId) => {
+    return ajax(BASE + '/manage/category/add', { categoryName, parentId }, 'POST')
+}
+// 更新分类
+export const reqUpdateCategorys = (categoryId, categoryName) => {
+    return ajax(BASE + '/manage/category/update', { categoryId, categoryName }, 'POST')
+}
+
+
 
 /* 
 json请求的接口请求函数
 */
 export const reqWeather = () => {
-    const url = "https://wis.qq.com/weather/common?source=pc&weather_type=observe%7Cforecast_1h%7Cforecast_24h%7Cindex%7Calarm%7Climit%7Ctips%7Crise&province=江苏省&city=徐州市"
-    jsonp(url, {}, (err, data) => {
-        console.log(err, data);
+    return new Promise((resolve, reject) => {
+        const url = "https://wis.qq.com/weather/common?source=pc&weather_type=observe%7Cforecast_1h%7Cforecast_24h%7Cindex%7Calarm%7Climit%7Ctips%7Crise&province=江苏省&city=徐州市"
+        jsonp(url, {}, (err, data) => {
+            // console.log(err, data);
+            if (!err && data.message === 'OK') {
+                //取出需要的数据  ,解构赋值的形式不好用，这里层次太多了
+                // data.data.forecast_1h.0.weather
+                const weatherData = data.data.forecast_1h[0].weather
+                // console.log(data.data.forecast_1h[0].weather);
+                message.success('成功获取天气')
+                resolve(weatherData)
+
+            } else {
+                //如果失败了
+                message.error('获取天气信息失败')
+            }
+        })
     })
 }
-reqWeather()
+export const reqWeatherPic = () => {
+    return new Promise((resolve, reject) => {
+
+        const url = "https://mat1.gtimg.com/pingjs/ext2020/weather/pc/icon/weather/day/01.png"
+        jsonp(url, {}, (err, data) => {
+            // console.log(data);
+            // resolve(data)
+        })
+    })
+}
+// reqWeather()
+// reqWeatherPic()
