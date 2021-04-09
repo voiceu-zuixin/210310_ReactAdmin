@@ -4,11 +4,18 @@ import {
     Table,
     Button,
     message,
+    Modal,
     // Pagination
 } from 'antd'
 import LinkButton from '../../components/link-button'
 import { PlusOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import { reqCategorys } from '../../api'
+import {
+    reqCategorys,
+    reqUpdateCategorys,
+    // reqAddCategorys
+} from '../../api'
+// import AddForm from './add-form'
+import UpdateForm from './update-form'
 
 
 
@@ -21,6 +28,7 @@ export default class Category extends Component {
         parentId: '0',//当前需要显示的分类鞋标的parentId
         parentName: '',//当前需要显示的分类列表的父分类名称
         subCategorys: [],//二级分类列表
+        showStatus: 0,//标识添加、更新的确认框是否显示，0：都不显示；1：显示添加；2：显示更新
     }
 
     // 初始化Table所有列的数组
@@ -38,9 +46,10 @@ export default class Category extends Component {
                 //如果写了这个参数，那么第一个text参数就是这行的值，第二个record参数才是整行的数据对象   
                 render: (text, category) => (//
                     <span>
-                        <LinkButton>修改分类</LinkButton>
-                        {/* 如何向事件回调函数传递参数：先定义一个匿名函数，在函数中调用处理函数，并传入数据 */}
-                        {this.parentId === '0' ? <LinkButton onClick={() => { this.showSubCategorys(category) }}>查看子分类</LinkButton> : null}
+                        <LinkButton onClick={() => { this.showUpdate(category) }}>修改分类</LinkButton>
+                        {/* 如何向事件回调函数传递参数：先定义一个匿名函数，在函数中调用处理函数，并传入数据,但是前面的括号不要加形参，括号的形参代表的是该组件收集的数据，不一样的组件信息不一样 */}
+                        {/* 在jsx里面用大括号，是特定语法，jsx里面不能用if-else语句，只能用这种三元表达式，而且能够直接返回结果进入页面 */}
+                        {this.state.parentId === '0' ? <LinkButton onClick={() => { this.showSubCategorys(category) }}>查看子分类</LinkButton> : null}
 
                     </span>
                 )
@@ -74,6 +83,8 @@ export default class Category extends Component {
                 this.setState({
                     subCategorys: categorys
                 })
+                console.log('getCategory', parentId);
+                console.log(categorys);
             }
         } else {
             message.error('获取分类列表失败')
@@ -94,7 +105,84 @@ export default class Category extends Component {
         // setState()不能立即获取更新后的状态，因为setState()是异步更新的，需要在里面的第二个参数里写回调函数才能
         // 不能在外部写，得不到返回的数据，外部是同步函数
         console.log(category);
+        console.log('sub', this.state.subCategorys);
     }
+
+    //显示添加的确认框
+    showAdd = () => {
+        this.setState({
+            showStatus: 1
+        })
+    }
+
+    //显示更新的确认框
+    showUpdate = (category) => {
+        // 保存分类对象
+        this.category = category
+        //更新状态
+        this.setState({
+            showStatus: 2
+        })
+    }
+
+    //点击后显示指定的一级分类列表
+    showParentCategorys = () => {
+        //更新为显示一级列表的状态，state改变后会自动render以此
+        this.setState({
+            parentId: '0',
+            parentName: '',
+            subCategorys: [],
+        })
+    }
+
+    /* 
+    响应点击取消：隐藏对话框
+    */
+    handleCancel = () => {
+
+        console.log('点击取消后',this.form);
+        // console.log('点击取消后',this.form.setFieldsValue({
+        //     va:'a'
+        // }));
+
+        // 隐藏对话框
+        this.setState({
+            showStatus: 0
+        })
+    }
+
+    /* 
+    添加分类
+    */
+    addCategory = () => {
+
+    }
+
+    /*
+    更新分类
+    */
+    updateCategory =async () => {
+        // 隐藏确认框
+        this.setState({
+            showStatus: 0
+        })
+
+        //准备数据
+        const categoryId = this.category._id
+        const categoryName = this.form.props.value
+        console.log(this.form);
+
+        console.log(categoryName);
+        //发请求，更新分类
+        const result = await reqUpdateCategorys(categoryId, categoryName )
+        if (result.status === 0) {
+            //重新显示列表 
+            this.getCategorys()
+
+        }
+        console.log(this.form);
+    }
+
     UNSAFE_componentWillMount() {
         this.initColumns()
     }
@@ -104,25 +192,64 @@ export default class Category extends Component {
         this.getCategorys()
     }
 
+
     render() {
 
         // 读取状态中的列表
-        const { categorys, loading, subCategorys, parentId, parentName } = this.state
+        const { categorys, loading, subCategorys, parentId, parentName, showStatus } = this.state
+        // console.log(parentId);
+
+        // 读取点击修改弹出框中，预设的指定分类
+        const category = this.category || {name:'temp'}//如果暂时还没有，则制定一个空对象
+
+
 
         // card的左侧
         const title = parentId === '0' ? '一级分类列表' : (
             <span>
-                <LinkButton>一级分类列表</LinkButton>
-                <ArrowRightOutlined />
+                <LinkButton onClick={this.showParentCategorys}>一级分类列表</LinkButton>
+                <ArrowRightOutlined />  &nbsp;
+                <span>{parentName}</span>
             </span>
         )
         // card的右侧
         const extra = (
-            <Button type="primary">
+            <Button type="primary" onClick={this.showAdd}>
                 <PlusOutlined />
                 添加
             </Button>
         )
+
+        return (
+            <Card title={title} extra={extra} >
+                <Table dataSource={parentId === '0' ? categorys : subCategorys}
+                    rowKey="_id"
+                    bordered
+                    loading={loading}
+                    pagination={{ defaultPageSize: 5, showQuickJumper: true }}
+                    columns={this.columns} />
+                {/* <Pagination showQuickJumper defaultCurrent={2} total={500} disabled /> */}
+
+                <Modal title="添加分类"
+                    visible={showStatus === 1}
+                    onOk={this.addCategory}
+                    onCancel={this.handleCancel}>
+                    {/* <AddForm /> */}
+                </Modal>
+
+                <Modal title="修改分类"
+                    visible={showStatus === 2}
+                    onOk={this.updateCategory}
+                    destroyOnClose={true}
+                    onCancel={this.handleCancel}>
+                    <UpdateForm categoryName={category.name}
+                        setForm={(form) => { this.form = form }} />
+                </Modal>
+            </Card>
+
+        )
+
+
 
 
         // const dataSource1 = [
@@ -131,42 +258,29 @@ export default class Category extends Component {
         //         "_id": "1",
         //         "name": "家用电器1",
         //         "__v": 0,
-        //         "place":'xx1'
+        //         "place": 'xx1'
         //     },
         //     {
         //         "parentId": "0",
         //         "_id": "2",
         //         "name": "家用电器2",
         //         "__v": 0,
-        //         "place":'xx2'
+        //         "place": 'xx2'
         //     },
         //     {
         //         "parentId": "0",
         //         "_id": "3",
         //         "name": "家用电器3",
         //         "__v": 0,
-        //         "place":'xx3'
+        //         "place": 'xx3'
         //     },
         //     {
         //         "parentId": "0",
         //         "_id": "4",
         //         "name": "家用电器4",
         //         "__v": 0,
-        //         "place":'xx4'
+        //         "place": 'xx4'
         //     },
         // ];
-
-
-        return (
-            <Card title={title} extra={extra} >
-                <Table dataSource={categorys}
-                    rowKey="_id"
-                    bordered
-                    loading={loading}
-                    pagination={{ defaultPageSize: 5, showQuickJumper: true }}
-                    columns={this.columns} />
-                {/* <Pagination showQuickJumper defaultCurrent={2} total={500} disabled /> */}
-            </Card>
-        )
     }
 }

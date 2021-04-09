@@ -6,6 +6,9 @@ export default class Bar extends Component {
         return (
             <div>
                 Bar
+                {
+                    1 === 2 ? 1 : 2
+                }
             </div>
         )
     }
