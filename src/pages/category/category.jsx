@@ -5,16 +5,15 @@ import {
     Button,
     message,
     Modal,
-    // Pagination
 } from 'antd'
 import LinkButton from '../../components/link-button'
 import { PlusOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import {
     reqCategorys,
     reqUpdateCategorys,
-    // reqAddCategorys
+    reqAddCategorys
 } from '../../api'
-// import AddForm from './add-form'
+import AddForm from './add-form'
 import UpdateForm from './update-form'
 
 
@@ -58,15 +57,17 @@ export default class Category extends Component {
     }
 
     // 异步获取一级分类列表或者二级分类列表
-    getCategorys = async () => {
+    getCategorys = async (parentId) => {//parentId如果指定了，就根据指定的，如果没指定，就从state中读取
+        // console.log(parentId);
         //在发送请求前，显示loading
         this.setState({
             loading: true
         })
         //发异步ajax请求，获取数据
-        const { parentId } = this.state
+        parentId = parentId || this.state.parentId
+        // console.log(parentId);
+
         const result = await reqCategorys(parentId)
-        // console.log('---',result);
         //在请求完成后，隐藏loading
         this.setState({
             loading: false
@@ -123,6 +124,7 @@ export default class Category extends Component {
         this.setState({
             showStatus: 2
         })
+
     }
 
     //点击后显示指定的一级分类列表
@@ -132,7 +134,13 @@ export default class Category extends Component {
             parentId: '0',
             parentName: '',
             subCategorys: [],
-        })
+        },
+            //此处会在setState完成后再进行调用,这是第一种做法，为了和视频保持一致，以防后续会用到其中的方法
+            // 暂时先用视频里的方法，而且这种方法，就算不是添加新分类，点回去都会重新渲染，性能不如方法二
+            // () => { this.getCategorys() }
+        )
+
+        console.log('show', this.state.parentId);
     }
 
     /* 
@@ -140,10 +148,7 @@ export default class Category extends Component {
     */
     handleCancel = () => {
 
-        console.log('点击取消后',this.form);
-        // console.log('点击取消后',this.form.setFieldsValue({
-        //     va:'a'
-        // }));
+        console.log('点击取消后', this.form);
 
         // 隐藏对话框
         this.setState({
@@ -154,33 +159,103 @@ export default class Category extends Component {
     /* 
     添加分类
     */
-    addCategory = () => {
+    addCategory = async () => {
+
+        // 表单验证通过后菜进行处理,validateFields()方法使用形式也改变了，显示是promise形式
+        const deliForm = this.deliForm
+        deliForm.validateFields()
+            .then(async (values) => {
+                console.log('我是add的values', values);
+                // 隐藏对话框
+                this.setState({
+                    showStatus: 0
+                })
+
+                // 为什么无法显示，因为是点击这个，才会关闭对话框，然后清除modal里的组件
+                // 然后form被unmount，才会触发willUnmount，才会传出resultValue
+                // 在此时，会将关闭对话框作为异步任务，是处于下方打印代码之后，所以数据还未传出
+                // 要在传出后进行打印，所以应该换个地方打印，或者写成async？？？
+                // 或者不把传出代码写在willunmount中,   
+                // 问题解决了，给Form设置一个onValuesChange事件，然后在这个方法中，写上传出数据，这个是动态的传出
+                console.log('cate_resultValue2', this.resultValue);
+                // const { input, classer } = this.resultValue
+                const { input, classer } = deliForm.getFieldsValue()
+                // console.log(this.deliForm.getFieldsValue);
+                const categoryName = input
+                const parentId = classer
+                const result = await reqAddCategorys(categoryName, parentId)
+                if (result.status === 0) {
+                    // 如果当前分类列表就是要添加的页面，才需要重新获取分类列表
+                    if (parentId === this.state.parentId) {
+                        // 重新获取分类列表显示
+                        this.getCategorys()
+                    } else if (parentId === '0') {//在二级分类列表下添加一级分类，重新获取一级分类列表，但是不需要显示
+                        /* 
+                        一种做法是在showParentCategorys里面的setState的回调里面调用，
+                        这种做法，会在每次点击showParentCategorys都会调用，可能性能不太高
+                        因为如果只是普通的跳转回一级列表，没有更改，不需要调用回调函数，getCategorys，这个是异步的，直接渲染就行，
+                        但是这种做法会每次都异步请求，如果后端出问题了，还会卡住
+                        */
+
+                        // 另一种做法是改变getCategorys函数，给它添加一个形参parentId
+                        this.getCategorys('0')//这里千万不能传入数字0，数字0会被判断为false，要传入'0'
+                    }
+                }
+            })
+            .catch(err => {
+                console.log('error', err);
+            })
+
+        console.log('deliForm', this.deliForm);
+        const xx = this.deliForm.getFieldsValue()
+        console.log('xx', xx);
 
     }
 
     /*
     更新分类
     */
-    updateCategory =async () => {
-        // 隐藏确认框
-        this.setState({
-            showStatus: 0
-        })
+    updateCategory = async () => {
 
-        //准备数据
-        const categoryId = this.category._id
-        const categoryName = this.form.props.value
-        console.log(this.form);
 
-        console.log(categoryName);
-        //发请求，更新分类
-        const result = await reqUpdateCategorys(categoryId, categoryName )
-        if (result.status === 0) {
-            //重新显示列表 
-            this.getCategorys()
+        // 表单验证通过后菜进行处理,validateFields()方法使用形式也改变了，显示是promise形式
+        const deliForm = this.deliForm
+        console.log(deliForm);
+        deliForm.validateFields()
+            .then(async (values) => {
+                console.log('验证成功');
+                console.log('我是update的values', values);
 
-        }
-        console.log(this.form);
+                // 隐藏确认框
+                this.setState({
+                    showStatus: 0
+                })
+
+                //准备数据
+                const categoryId = this.category._id
+                const categoryName = this.form.props.value
+                console.log('this.form',this.form);
+
+                console.log('this.deliForm', this.deliForm);
+                console.log('this.deliForm', this.deliForm.getFieldsValue().input);
+
+                console.log(categoryName);
+                //发请求，更新分类
+                const result = await reqUpdateCategorys(categoryId, categoryName)
+                if (result.status === 0) {
+                    //重新显示列表 
+                    this.getCategorys()
+
+                }
+                console.log(this.form);
+
+            })
+            .catch(err => {
+                console.log('error', err);
+            })
+
+
+
     }
 
     UNSAFE_componentWillMount() {
@@ -200,7 +275,7 @@ export default class Category extends Component {
         // console.log(parentId);
 
         // 读取点击修改弹出框中，预设的指定分类
-        const category = this.category || {name:'temp'}//如果暂时还没有，则制定一个空对象
+        const category = this.category || { name: 'temp' }//如果暂时还没有，则制定一个空对象
 
 
 
@@ -233,17 +308,31 @@ export default class Category extends Component {
                 <Modal title="添加分类"
                     visible={showStatus === 1}
                     onOk={this.addCategory}
+                    destroyOnClose={true}
                     onCancel={this.handleCancel}>
-                    {/* <AddForm /> */}
+                    <AddForm categorys={categorys}
+                        parentId={parentId}
+                        // setForm={(form) => { this.resultValue = form }}
+                        // 每一次传出来都会把前一次的deliForm替换掉，所以不用担心会形成数组
+                        deliverForm={(form) => { this.deliForm = form }}
+                    />
                 </Modal>
 
                 <Modal title="修改分类"
                     visible={showStatus === 2}
                     onOk={this.updateCategory}
+
+                    //用于关闭弹窗时，清除之前输入的数据，
+                    // 但是暂时没有找到那个视频的功能在此版本的antd如何执行，就用这个标签，
+                    // 每当关闭的时候，直接清除里面的组件，以此来达到效果
                     destroyOnClose={true}
+
                     onCancel={this.handleCancel}>
-                    <UpdateForm categoryName={category.name}
-                        setForm={(form) => { this.form = form }} />
+                    <UpdateForm
+                        categoryName={category.name}
+                        setForm={(form) => { this.form = form }}
+                        deliverForm={(form) => { this.deliForm = form }}
+                    />
                 </Modal>
             </Card>
 
