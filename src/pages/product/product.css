@@ -1,0 +1,16 @@
+.product-detail .product-item {
+  justify-content: flex-start;
+}
+.product-detail .product-item .left {
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 15px;
+  justify-content: none;
+}
+.product-detail .product-item .product-img {
+  width: 150px;
+  height: 150px;
+  border: 1px solid #43494e;
+  margin-right: 10px;
+}
+/*# sourceMappingURL=./product.css.map */

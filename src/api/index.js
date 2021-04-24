@@ -43,7 +43,42 @@ export const reqAddCategorys = (categoryName, parentId) => {
 export const reqUpdateCategorys = (categoryId, categoryName) => {
     return ajax(BASE + '/manage/category/update', { categoryId, categoryName }, 'POST')
 }
+//获取商品分页列表
+export const reqProducts = (pageNum, pageSize) => {
+    return ajax(BASE + '/manage/product/list', { pageNum, pageSize })
+}
+// 添加商品、或修改商品
+export const reqAddOrUpdateProduct = (product) => {
+    return ajax(BASE + '/manage/product/' + (product._id ? 'update' : 'add'), product, 'POST')
+}
 
+// 添加/修改商品
+// export const reqAddOrUpdateProduct = (product) => ajax(BASE + 'manage/product/' + (product._id ? 'update' : 'add'), product, 'POST')
+
+// 修改商品
+// export const reqUpdateProduct = (product)=>{
+//     return ajax(BASE+'manage/product/update'.product,'POST')
+// }
+
+// 搜索商品分页列表
+// searchType：搜索的类型，productName/productDesc，用[]表示变量的方式
+export const reqSearchProducts = ({ pageNum, pageSize, searchName, searchType }) => {
+    return ajax(BASE + '/manage/product/search', {
+        pageNum,
+        pageSize,
+        [searchType]: searchName,
+    })
+}
+
+// 删除照片接口,就算传进一个非对象形式参数，也要在第二个参数中添加中括号变成对象
+export const reqDeleteImg = (name) => ajax(BASE + '/manage/img/delete', { name }, 'POST')
+
+
+//获取一个分类
+export const reqCategory = (categoryId) => ajax(BASE + '/manage/category/info', { categoryId })
+
+// 更新商品的状态（上架/下架）
+export const reqUpdateStatus = (productId, status) => ajax(BASE + '/manage/product/updateStatus', { productId, status }, 'POST')
 
 
 /* 
@@ -79,5 +114,3 @@ export const reqWeatherPic = () => {
         })
     })
 }
-// reqWeather()
-// reqWeatherPic()

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import { reqWeather } from '../../api'
-import { Modal} from 'antd';
+import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { formateDate } from '../../utils/dateUtils'
 import memoryUtils from '../../utils/memoryUtils'
@@ -30,7 +30,9 @@ class Header extends Component {
             if (item.key === path) {
                 title = item.title
             } else if (item.children) {
-                const citem = item.children.find(citem => citem.key === path)
+                // 在所有的子item中查找匹配的
+                const citem = item.children.find(citem => path.indexOf(citem.key) === 0)
+                // 如果有值，才说明有匹配的
                 if (citem) {
                     title = citem.title
                 }
@@ -46,8 +48,8 @@ class Header extends Component {
             // title: 'Do you Want to delete these items?',
             icon: <ExclamationCircleOutlined />,
             content: '确定退出吗',
-            onOk:()=> {
-                console.log('OK',this);
+            onOk: () => {
+                console.log('OK', this);
                 // alert('?')
                 // 删除保存的user数据
                 storageUtils.removeUser()
@@ -73,7 +75,7 @@ class Header extends Component {
 
     }
     //卸载掉计时器
-    componentWillUnmount(){
+    componentWillUnmount() {
         clearInterval(this.intervalId)
     }
     render() {

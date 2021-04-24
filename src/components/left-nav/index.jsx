@@ -14,7 +14,7 @@ class LeftNav extends Component {
         return menuList.map((itemObj) => {
             if (itemObj.children) {
                 // 查找一个与当前请求路径匹配的子itemObj
-                const cItem = itemObj.children.find(cItem=>cItem.key === path)
+                const cItem = itemObj.children.find(cItem=>  path.indexOf(cItem.key)===0)
                 // 如果存在，说明当前item的子列表需要被打开
                 if(cItem) this.openKey = itemObj.key
                 return (
@@ -41,8 +41,10 @@ class LeftNav extends Component {
     }
     render() {
         const menu = this.getMenuListNode(menuList)
-        const path = this.props.location.pathname
+        let path = this.props.location.pathname
+        if(path.indexOf('/product')===0) path = '/product' //如果是/product的子路由，也是选中目标的
         const openKey = this.openKey
+        
         return (
             <div className="left-nav">
                 <Link to='/' className="left-nav-header">
