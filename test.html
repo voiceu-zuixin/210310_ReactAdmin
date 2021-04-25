@@ -162,12 +162,120 @@
         //     return p1 + p2 + 'Hello World!';
         // }
 
-        let func6 = (p1, p2) =>  p1 + p2 + 'Hello World!';
-        
+        // let func6 = (p1, p2) =>  p1 + p2 + 'Hello World!';
 
-        let func6Res = func6('张三', '李四')
-        console.log(func6Res);
 
+        // let func6Res = func6('张三', '李四')
+        // console.log(func6Res);
+        // setTimeout(function () {
+        //     console.log(1)
+        //     new Promise(function (resolve) {
+        //         console.log(6)
+        //         for (var i = 0; i < 10000; i++) {
+        //             i == 9999 && resolve()
+        //         }
+        //         console.log(7)
+        //     }).then(function () {
+        //         console.log(8)
+        //     });
+        //     console.log(9);
+        // }, 0);
+        // new Promise(function (resolve) {
+        //     console.log(2)
+        //     for (var i = 0; i < 10000; i++) {
+        //         i == 9999 && resolve()
+        //     }
+        //     console.log(3)
+        // }).then(function () {
+        //     console.log(4)
+        // });
+        // console.log(5);
+        // 这的问题是，为什么答案是 2 3 5 4 1
+        // 而不是 2 3 5 1 4
+        function fun1(x) {
+            console.log(x);
+        }
+
+        /* 
+            setTimeout只有第一个参数是字符串才会是回调函数，跟react中标签里的回调函数一样，不能自己写上括号，
+            也可以不是字符串，这个函数可以是不加括号的函数，反正不能自己运行就完事了，但前提是该函数是不需要参数的比如：
+            fun3 = function () {
+                console.log(444);
+            }
+            setTimeout(fun3, 1000)
+            可以延迟输出
+
+            *如果不是字符串，就相对于不是异步函数了，直接就运行了，比如
+            function fun1(x) {
+                console.log(x);
+            }
+
+
+            for(let a = 0 ; a < 200 ; a++){
+                setTimeout(fun1(a),1000)
+            }
+            输出0-199
+
+            *如果是字符串就是正常的异步
+            for(var a = 0 ; a < 200 ; a++){
+                setTimeout('fun1(a)',1000)
+            }
+            输出200个200，因为异步了，每个fun1(a)都在队列里等着，最后a都等于200了，然后全部一起输出了
+
+            *这种情况，eval是把字符串转成函数，相对于去掉字符串能正常运行
+            for(var a = 0 ; a < 200 ; a++){
+                setTimeout(eval('fun1(a)'),1000)
+            }
+            输出0-199，因为setTimeout第一个参数不是字符串，相对于这里直接同步运行eval()函数，然后直接把'fun1(a)'变成了fun1(a)，
+            这个fun1(a)一出来就直接运行了，所以每一次a循环的时候，都直接输出了
+
+
+            *这种情况，setTimeout第一个参数是字符串，所以会把eval异步运行，等a都200后才开始运行eval()--->'fun1(a)'--->fun1(a)--->200
+            for(var a = 0 ; a < 200 ; a++){
+                setTimeout("eval('fun1(a)')",1000)
+            }
+            输出200个200
+
+
+
+        */
+        // setTimeout如果第一个回调函数是字符串形式，那么，它第一个动作不是执行这个函数，而是执行把字符串转成函数，就是去掉字符串的工作
+
+        // 每一次都新建一个宏任务，a都存下来了
+        for(let a = 0 ; a < 200 ; a++){
+            setTimeout(fun1(a),1000)
+        }//0-199
+
+
+        // 每一次都是讲引号去掉，
+        for(var a = 0 ; a < 200 ; a++){
+            setTimeout('fun1(a)',1000)
+        }//200个200
+        eval会保存变量
+        for(var a = 0 ; a < 200 ; a++){
+            setTimeout(eval('fun1(a)'),1000)
+        }//0-199
+        for(var a = 0 ; a < 200 ; a++){
+            setTimeout("eval('fun1(a)')",1000)
+        }//200个200
+
+
+
+        fun2 = function (a) {
+            return 'fun1(' + a + ')'
+        }
+
+        setTimeout('fun1(33)', 1000)
+        setTimeout(fun1(22), 1000)
+        setTimeout(fun2(22), 1000)
+        fun3 = function () {
+            console.log(444);
+        }
+        setTimeout(fun3, 1000)
+
+        // setTimeout(alert('5seconds!'),5000)//没有生效--直接提醒，没有延迟
+        // setTimeout("alert('5seconds!')", 5000)//生效--延迟提醒
+        // setTimeout('console.log(12)', 5000)//生效--延迟提醒
     </script>
 </body>
 

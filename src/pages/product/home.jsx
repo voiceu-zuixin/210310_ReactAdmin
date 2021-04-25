@@ -206,7 +206,7 @@ export default class ProductHome extends Component {
                     }}
                     dataSource={dataSource}
                     columns={this.columns}
-                />;
+                />
             </Card>
         )
     }
