@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <span style="color: aqua;">???</span>
+
+    <script style="border: 0ch;">
+        // let person = {name:'adsd'}
+        // let person = 'ss'
+        // console.log(person);
+        // let member = [person]
+        // person = null
+        // console.log(member);
+        // console.log(person);
+
+
+
+
+        // Promise.resolve().then(() => {
+        //     console.log(0);
+        //     return Promise.resolve(4);
+        // }).then((res) => {
+        //     console.log(res)
+        // })
+
+        // Promise.resolve().then(() => {
+        //     console.log(1);
+        // }).then(() => {
+        //     console.log(2);
+        // }).then(() => {
+        //     console.log(3);
+        // }).then(() => {
+        //     console.log(5);
+        // }).then(() => {
+        //     console.log(6);
+        // }).then(() => {
+        //     console.log(7);
+        // })
+
+        // var merge = function (nums1, m, nums2, n) {
+        //     const temp = nums1.slice(0, m)
+        //     const arr = [...temp, ...nums2]
+        //     arr.sort((a, b) => a - b)
+        //     console.log(arr)
+        //     return arr
+        // };
+
+        // const arr = []
+        // const arr1 = [...arr]
+        // // console.log(arr1);
+        // // const arr2 = merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3)
+
+
+        // const arr2 = [1, 2, 3, 0, 0, 0]
+        // console.log(arr2);
+        // arr2.length = 3
+        // console.log(arr2);
+        // 对数组控制长度，可以进行slice切片，也可以直接length=？
+
+
+        // let data = { a: 'ss', n: 'sd' }
+        // data = [1, 2, 3, 4]
+        // let a = { ...data, aa: 'sds' }
+        // console.log(a);
+
+        // var search = function (nums, target) {
+        //     nums.forEach(cur => {
+        //         if (cur == target) return true
+        //     })
+        //     return false
+        // };
+        // search([2,5,6,0,0,1,2],0)
+        // var findMin = function (nums) {
+        //     let low = 0
+        //     let high = nums.length - 1
+        //     let pivot = Math.floor((high + low) / 2)
+        //     let flag = pivot
+        //     while (high > pivot) {
+        //         if (nums[pivot] < nums[high]) {
+        //             high = pivot
+        //             pivot = Math.floor((high + low) / 2)
+        //         } else if (nums[pivot] > nums[high]) {
+        //             low = pivot + 1
+        //             pivot = Math.floor((high + low) / 2)
+        //         } else {
+        //             if (pivot == high - 1) {
+        //                 pivot = Math.floor((flag + low) / 2)
+        //                 high = flag
+        //                 flag = pivot
+        //             } else {
+        //                 pivot++
+        //             }
+        //         }
+        //     }
+        //     return nums[high]
+        // };
+        // findMin([1, 3, 1, 1])
+        // var permute = function (nums) {
+        //     const res = []
+        //     const backtrack = (path) => {
+        //         if (path.length === nums.length) {
+        //             res.push(path)
+        //             return
+        //         }
+        //         nums.forEach(n => {
+        //             if (path.includes(n)) return
+        //             backtrack(path.concat(n))
+        //         })
+        //     }
+        //     backtrack([])
+        //     return res
+        // };
+
+        // const res = permute([1,2,3])
+        // console.log(res);
+        // var largestNumber = function (nums) {
+        //     const temp = nums.map(c => {
+        //         return '' + c
+        //     })
+        //     temp.sort((a, b) => {
+        //         let i = 0
+        //         let j = 0
+        //         let long = 0
+        //         // let length = 0
+        //         // if (a.length > b.length) {
+        //         //     length = a.length
+        //         // } else {
+        //         //     length = b.length
+        //         // }
+        //         // let alength = a.length
+        //         // let blength = b.length
+        //         // let max = Math.max(i,j)
+        //         let length = Math.max(a.length,b.length)
+        //         for (; a[i] == b[j] && long < length; i++, j++,long++) {
+        //             if (a == b) break
+        //             if (i == a.length - 1) i = -1
+        //             if (j == b.length - 1) j = -1
+        //         }
+        //         console.log(temp)
+        //         return b[j] - a[i]
+        //     })
+        //     console.log(temp)
+        //     let res = ''
+        //     for (let i = 0; i < temp.length; i++) {
+        //         res += temp[i]
+        //     }
+        //     console.log(res[0])
+        //     if (res[0] == 0 && res.length > 1) return '0'
+        //     return res
+        // };
+        // largestNumber([3, 43, 48, 94, 85, 33, 64, 32, 63, 66])
+        //1个参数，一行，有返回值的函数
+        // let func6 = function (p1, p2) {
+        //     return p1 + p2 + 'Hello World!';
+        // }
+
+        // let func6 = (p1, p2) =>  p1 + p2 + 'Hello World!';
+
+
+        // let func6Res = func6('张三', '李四')
+        // console.log(func6Res);
+        // setTimeout(function () {
+        //     console.log(1)
+        //     new Promise(function (resolve) {
+        //         console.log(6)
+        //         for (var i = 0; i < 10000; i++) {
+        //             i == 9999 && resolve()
+        //         }
+        //         console.log(7)
+        //     }).then(function () {
+        //         console.log(8)
+        //     });
+        //     console.log(9);
+        // }, 0);
+        // new Promise(function (resolve) {
+        //     console.log(2)
+        //     for (var i = 0; i < 10000; i++) {
+        //         i == 9999 && resolve()
+        //     }
+        //     console.log(3)
+        // }).then(function () {
+        //     console.log(4)
+        // });
+        // console.log(5);
+        // 这的问题是，为什么答案是 2 3 5 4 1
+        // 而不是 2 3 5 1 4
+        function fun1(x) {
+            console.log(x);
+        }
+
+        /* 
+            setTimeout只有第一个参数是字符串才会是回调函数，跟react中标签里的回调函数一样，不能自己写上括号，
+            也可以不是字符串，这个函数可以是不加括号的函数，反正不能自己运行就完事了，但前提是该函数是不需要参数的比如：
+            fun3 = function () {
+                console.log(444);
+            }
+            setTimeout(fun3, 1000)
+            可以延迟输出
+
+            *如果不是字符串，就相对于不是异步函数了，直接就运行了，比如
+            function fun1(x) {
+                console.log(x);
+            }
+
+
+            for(let a = 0 ; a < 200 ; a++){
+                setTimeout(fun1(a),1000)
+            }
+            输出0-199
+
+            *如果是字符串就是正常的异步
+            for(var a = 0 ; a < 200 ; a++){
+                setTimeout('fun1(a)',1000)
+            }
+            输出200个200，因为异步了，每个fun1(a)都在队列里等着，最后a都等于200了，然后全部一起输出了
+
+            *这种情况，eval是把字符串转成函数，相对于去掉字符串能正常运行
+            for(var a = 0 ; a < 200 ; a++){
+                setTimeout(eval('fun1(a)'),1000)
+            }
+            输出0-199，因为setTimeout第一个参数不是字符串，相对于这里直接同步运行eval()函数，然后直接把'fun1(a)'变成了fun1(a)，
+            这个fun1(a)一出来就直接运行了，所以每一次a循环的时候，都直接输出了
+
+
+            *这种情况，setTimeout第一个参数是字符串，所以会把eval异步运行，等a都200后才开始运行eval()--->'fun1(a)'--->fun1(a)--->200
+            for(var a = 0 ; a < 200 ; a++){
+                setTimeout("eval('fun1(a)')",1000)
+            }
+            输出200个200
+
+
+
+        */
+        // setTimeout如果第一个回调函数是字符串形式，那么，它第一个动作不是执行这个函数，而是执行把字符串转成函数，就是去掉字符串的工作
+
+        // 每一次都新建一个宏任务，a都存下来了
+        for(let a = 0 ; a < 200 ; a++){
+            setTimeout(fun1(a),1000)
+        }//0-199
+
+
+        // 每一次都是讲引号去掉，
+        for(var a = 0 ; a < 200 ; a++){
+            setTimeout('fun1(a)',1000)
+        }//200个200
+        eval会保存变量
+        for(var a = 0 ; a < 200 ; a++){
+            setTimeout(eval('fun1(a)'),1000)
+        }//0-199
+        for(var a = 0 ; a < 200 ; a++){
+            setTimeout("eval('fun1(a)')",1000)
+        }//200个200
+
+
+
+        fun2 = function (a) {
+            return 'fun1(' + a + ')'
+        }
+
+        setTimeout('fun1(33)', 1000)
+        setTimeout(fun1(22), 1000)
+        setTimeout(fun2(22), 1000)
+        fun3 = function () {
+            console.log(444);
+        }
+        setTimeout(fun3, 1000)
+
+        // setTimeout(alert('5seconds!'),5000)//没有生效--直接提醒，没有延迟
+        // setTimeout("alert('5seconds!')", 5000)//生效--延迟提醒
+        // setTimeout('console.log(12)', 5000)//生效--延迟提醒
+    </script>
+</body>
+
+</html>
