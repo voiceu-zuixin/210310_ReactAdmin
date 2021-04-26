@@ -11,7 +11,8 @@ import { PAGE_SIZE } from '../../utils/constants'
 import AddForm from './add-form'
 import AuthForm from './auth-form'
 import memoryUtils from '../../utils/memoryUtils'
-import {formateDate} from '../../utils/dateUtils'
+import storageUtils from '../../utils/storageUtils'
+import { formateDate } from '../../utils/dateUtils'
 
 export default class Role extends Component {
 
@@ -75,12 +76,12 @@ export default class Role extends Component {
             {
                 title: '创建时间',
                 dataIndex: 'create_time',
-                render:formateDate
+                render: formateDate
             },
             {
                 title: '授权时间',
                 dataIndex: 'auth_time',
-                render:formateDate
+                render: formateDate
             },
             {
                 title: '授权人',
@@ -114,8 +115,8 @@ export default class Role extends Component {
     }
 
     //如果不写这个，那么单独选择圆孔的时候不会被选中，因为亮起被选中的是根据state来的
-    onSelect=(role)=>{
-        console.log(role);
+    onSelect = (role) => {
+        // console.log(role);
         this.setState({
             role
         })
@@ -179,8 +180,16 @@ export default class Role extends Component {
         //请求更新
         const result = await reqUpdateRole(role)
         if (result.status === 0) {
-            message.success('更新角色成功')
             this.getRoles()
+            // 如果当前更新的是自己的角色权限，则强制退出
+            if (role._id === memoryUtils.user.role._id) {
+                message.success('更新当前角色权限成功')
+                memoryUtils.user = {}
+                storageUtils.removeUser()
+                this.props.history.replace('/login')
+            } else {
+                message.success('更新角色成功')
+            }
         } else {
             message.error('更新角色失败')
         }
@@ -225,7 +234,7 @@ export default class Role extends Component {
                         type: 'radio',
                         columnWidth: '55px',
                         selectedRowKeys: [role._id],
-                        onSelect:this.onSelect
+                        onSelect: this.onSelect
                     }}
                     onRow={this.onRow}
                 />

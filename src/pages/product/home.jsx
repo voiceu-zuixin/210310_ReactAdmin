@@ -66,12 +66,12 @@ export default class ProductHome extends Component {
     }
 
     //更新指定商品的状态
-    updateStatus = async(productId,status)=>{
-        const result = await reqUpdateStatus(productId,status)
-        if(result.status===0){
+    updateStatus = async (productId, status) => {
+        const result = await reqUpdateStatus(productId, status)
+        if (result.status === 0) {
             message.success('更新商品成功')
             this.getProducts(this.pageNum)
-        }else{
+        } else {
             message.error('更新商品失败')
         }
     }
@@ -107,7 +107,7 @@ export default class ProductHome extends Component {
                         <span>
                             <Button
                                 type='primary'
-                                onClick={()=>this.updateStatus(_id,status===1?2:1)}
+                                onClick={() => this.updateStatus(_id, status === 1 ? 2 : 1)}
                             >
                                 {status === 1 ? '下架' : '上架'}
                             </Button>
@@ -135,7 +135,7 @@ export default class ProductHome extends Component {
                                 */}
                             {/* <LinkButton onClick={()=>{return this.props.history.push('/product/detail')}}>详情</LinkButton> */}
                             <LinkButton onClick={() => { this.props.history.push('/product/detail', { product }) }}>详情</LinkButton>
-                            <LinkButton onClick={()=>{this.props.history.push('/product/addupdate',product)}}>修改</LinkButton>
+                            <LinkButton onClick={() => { this.props.history.push('/product/addupdate', product) }}>修改</LinkButton>
 
 
                             {/* <LinkButton onClick={function xx() {
@@ -159,7 +159,7 @@ export default class ProductHome extends Component {
         const { products, total, loading, searchName, searchType } = this.state
         const dataSource = products
 
-
+        console.log('我render了');
 
         const title = (
             <span>
@@ -181,7 +181,7 @@ export default class ProductHome extends Component {
             </span>
         )
         const extra = (
-            <Button type='primary' onClick={()=>this.props.history.push('/product/addupdate')}>
+            <Button type='primary' onClick={() => this.props.history.push('/product/addupdate')}>
                 <PlusOutlined />
                 添加商品
             </Button>
@@ -194,15 +194,12 @@ export default class ProductHome extends Component {
                     loading={loading}
                     bordered
                     rowKey='_id'
-                    // rowKey={dataSource[0]._id}
-                    // rowKey={(record,index)=>record._id}
-                    // rowKey={(record,index)=>index}
-                    // rowKey={dataSource._id}
                     pagination={{
                         total: total,
                         defaultPageSize: PAGE_SIZE,
                         showQuickJumper: true,
-                        onChange: this.getProducts
+                        onChange: this.getProducts,
+                        current: this.pageNum
                     }}
                     dataSource={dataSource}
                     columns={this.columns}

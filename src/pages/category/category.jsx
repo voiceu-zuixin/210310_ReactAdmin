@@ -234,7 +234,7 @@ export default class Category extends Component {
                 //准备数据
                 const categoryId = this.category._id
                 const categoryName = this.form.props.value
-                console.log('this.form',this.form);
+                console.log('this.form', this.form);
 
                 console.log('this.deliForm', this.deliForm);
                 console.log('this.deliForm', this.deliForm.getFieldsValue().input);

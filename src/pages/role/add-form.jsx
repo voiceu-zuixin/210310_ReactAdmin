@@ -9,9 +9,9 @@ const Item = Form.Item
 
 
 /* 
-添加分类的form组件
+添加/修改用户的form组件
 */
-export default class AddForm extends Component {
+export default class UserForm extends Component {
 
     // 创建一个ref
     formRef = React.createRef()

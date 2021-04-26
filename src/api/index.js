@@ -85,10 +85,19 @@ export const reqUpdateStatus = (productId, status) => ajax(BASE + '/manage/produ
 export const reqRoles = () => ajax(BASE + '/manage/role/list')
 
 // 添加角色
-export const reqAddRole =(roleName)=> ajax(BASE+ '/manage/role/add',{roleName},'POST')
+export const reqAddRole = (roleName) => ajax(BASE + '/manage/role/add', { roleName }, 'POST')
 
 // 更新角色
-export const reqUpdateRole =(role)=> ajax(BASE+ '/manage/role/update',role,'POST')
+export const reqUpdateRole = (role) => ajax(BASE + '/manage/role/update', role, 'POST')
+
+// 获取所有用户的列表
+export const reqUsers = () => ajax(BASE + '/manage/user/list')
+
+//删除指定用户
+export const reqDeleteUser = (userId) => ajax(BASE + '/manage/user/delete', { userId }, 'PSOT')
+
+// 修改用户
+export const reqUpdateUser = (user) =>ajax(BASE+'/manage/user/update',user,'POST')
 
 /* 
 json请求的接口请求函数
