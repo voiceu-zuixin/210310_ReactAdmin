@@ -50,7 +50,7 @@ export default class PicturesWall extends React.Component {
     这个就相当于写成this.state = {},但是这个和constructor的优先级呢，
     个人理解是构造器优先，也会覆盖？
     */
-
+    //验证后知道，只要写了constructor里的state，外部就都不生效了
     state = {
         previewVisible: false, //标识是否显示大图预览Modal
         previewImage: '',
