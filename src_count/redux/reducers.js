@@ -34,10 +34,8 @@ function count(state = 1, action) {
 }
 
 
-
-
 /* 
-    参数是包含所有需要整合的reducer函数对象，返回一个新的总的reducer
+    参数是包含所有需要整合的reducer函数对象，返回一个新的总的reducer,接收的参数也是state和action
     包含的state形式是总的state
     {
         count:1,

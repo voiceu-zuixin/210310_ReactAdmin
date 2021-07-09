@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+// import { Route, Router, BrowserRouter } from 'react-router-dom'
+import Log from './Logg'
 // import {increment,decrement} from '../redux/actions'
+
+
+
 
 export default class Counter extends Component {
     // 设置props的验证格式
@@ -14,6 +19,7 @@ export default class Counter extends Component {
     }
 
     increment = () => {
+        console.log(this.props);
         this.props.increment(1)
     }
 
@@ -39,12 +45,20 @@ export default class Counter extends Component {
         this.props.incrementAsync(1)
     }
 
-    changeUser=()=>{
+    changeUser = () => {
 
         this.props.changeUser('ccc')
     }
 
+    switch = () => {
+        // this.props.history.replace('/login')
+
+        // <Log />
+
+    }
+
     render() {
+        console.log(this.props);
         return (
             <div>
                 计算后的数为{this.props.count}
@@ -60,6 +74,9 @@ export default class Counter extends Component {
 
                 <br />
                 <button onClick={this.changeUser}>换人</button>
+                <br />
+                <button onClick={this.switch}>跳转</button>
+                <Log />
             </div>
         )
     }

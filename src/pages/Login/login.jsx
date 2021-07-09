@@ -9,7 +9,7 @@ import logo from '../../assets/images/logo.png'//按alt + <——可以快速回
 import { Redirect } from 'react-router'; 
 
 
-export default class login extends Component {
+export default class Login extends Component {
     // 成功提交后的操作===>登录
     onFinish =async (values) => {
         // console.log('Received values of form: ', values);
