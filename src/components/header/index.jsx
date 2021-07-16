@@ -101,7 +101,8 @@ class Header extends Component {
                     <div className="header-bottom-left">{title}</div>
                     <div className="header-bottom-right">
                         <span>{currentTime}</span>
-                        <img src="https://mat1.gtimg.com/pingjs/ext2020/weather/pc/icon/currentweather/night/02.png" alt="weather" />
+                        &nbsp;&nbsp;&nbsp;
+                        天气：
                         <span>{weather}</span>
                     </div>
                 </div>

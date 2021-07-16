@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './login.less'
-import { Form, Input, Button, Checkbox,message } from 'antd';
+import { Form, Input, Button, Checkbox,message ,Alert} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {reqLogin} from '../../api'
 import memoryUtils from '../../utils/memoryUtils'
@@ -9,7 +9,7 @@ import logo from '../../assets/images/logo.png'//按alt + <——可以快速回
 import { Redirect } from 'react-router'; 
 
 
-export default class login extends Component {
+export default class Login extends Component {
     // 成功提交后的操作===>登录
     onFinish =async (values) => {
         // console.log('Received values of form: ', values);
@@ -55,6 +55,14 @@ export default class login extends Component {
                     <img src={logo} alt="logo" />
                     <h1>React项目：后台管理系统</h1>
                 </header>
+                <div className="login-message-box">
+                    <Alert
+                        message="您可以使用默认账户 voiceu 登录并浏览系统功能"
+                        type="info"
+                        showIcon
+                        closable
+                    />
+                </div>
                 <section className="login-content">
                     <h2>用户登录</h2>
                     <Form
@@ -67,6 +75,7 @@ export default class login extends Component {
                     >
                         <Form.Item
                             name="username"
+                            initialValue='voiceu'
                             rules={[
                                 { required: true, message: 'Please input your Username!' },
                                 { max: 12, message: "用户名最多12位" },
@@ -79,6 +88,7 @@ export default class login extends Component {
                         </Form.Item>
                         <Form.Item
                             name="password"
+                            initialValue='voiceu'
                             rules={[
                                 { required: true, whitespace: true, message: 'Please input your Password!' },
                                 { max: 12, message: "密码最多12位" },

@@ -273,7 +273,7 @@ export default class ProductAddUpdate extends Component {
 
         // 从this中取出是否更新的标识，其实可以直接用this.isUpdate，只是有些地方不能用.
         const { isUpdate, product } = this
-        const { pCategoryId, categoryId, imgs,detail } = product
+        const { pCategoryId, categoryId, imgs, detail } = product
 
         // 用来接收级联分类ID的数组
         const categoryIds = []
@@ -390,7 +390,7 @@ export default class ProductAddUpdate extends Component {
                         labelCol={{ span: 2 }}
                         wrapperCol={{ span: 18 }}
                     >
-                        <RichTextEditor ref={this.richTextEditorRef} detail={detail}/>
+                        <RichTextEditor ref={this.richTextEditorRef} detail={detail} />
                     </Item>
                     <Item>
                         <Button
