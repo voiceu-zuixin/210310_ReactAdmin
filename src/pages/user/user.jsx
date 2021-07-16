@@ -104,9 +104,11 @@ export default class User extends Component {
         console.log(this.form.getFieldsValue());
         const user = this.form.getFieldsValue()
         // this.form.resetFields()
-        if (this.user._id) {
+        if (this.user) {
+            // 要修改一下，也不知道当时为什么可以用
+            // if (this.user._id) {
             console.log(user);
-            user._id=this.user._id
+            user._id = this.user._id
             const result = await reqUpdateUser(user)
             if (result.status === 0) {
                 message.success('更新用户成功')

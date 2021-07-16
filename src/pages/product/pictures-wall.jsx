@@ -147,7 +147,7 @@ export default class PicturesWall extends React.Component {
                     accept='image/*'  //只接收图片格式
                     name='image' /* 请求参数名 */
                     listType="picture-card"
-                    fileList={fileList} /* 所以已经上传的文件列表 */
+                    fileList={fileList} /* 所有已经上传的文件列表 */
                     onPreview={this.handlePreview}
                     onChange={this.handleChange}
                 >
